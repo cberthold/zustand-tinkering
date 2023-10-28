@@ -1,0 +1,74 @@
+{
+  "name": "example-api",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "example-api/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/example-api",
+        "main": "example-api/src/main.ts",
+        "tsConfig": "example-api/tsconfig.app.json",
+        "assets": [
+          "example-api/src/assets"
+        ],
+        "isolatedConfig": true,
+        "webpackConfig": "example-api/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "example-api:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "example-api:build:development"
+        },
+        "production": {
+          "buildTarget": "example-api:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "example-api/**/*.ts"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {
+        "jestConfig": "example-api/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}

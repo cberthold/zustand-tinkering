@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import NxWelcome from './nx-welcome';
-
 import { Route, Routes, Link } from 'react-router-dom';
 
 const StyledApp = styled.div`
@@ -11,7 +9,6 @@ const StyledApp = styled.div`
 export function App() {
   return (
     <StyledApp>
-      <NxWelcome title="example-app" />
 
       {/* START: routes */}
       {/* These routes and navigation have been generated for you */}

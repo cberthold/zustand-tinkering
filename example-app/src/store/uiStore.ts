@@ -33,12 +33,13 @@ const setIsLoading = (loading: boolean) => useUiStore.setState((state) => ({ loa
 
 const randomIncrease = async () => {
     setIsLoading(true);
-    const url = new URL("https://www.randomnumberapi.com/api/v1.0/randomredditnumber?min=100&max=1000&count=1")
-    const response = await fetch(url, { mode: 'no-cors'});
+    const url = new URL("http://localhost:3000/api")
+    const response = await fetch(url);
+    const j = await response.json();
     await sleep(3000)
     setIsLoading(false);
-    console.log(response);
-    increase(1);
+    console.log(j);
+    increase(j.randomNumber[0]);
 };
 
 export const ACTIONS: UIActions = {

@@ -3,19 +3,22 @@ import { immer } from 'zustand/middleware/immer';
 import { devtools } from 'zustand/middleware';
 
 interface UIState {
-    bears: number;
+    resultData: Result;
     loading: boolean;
 }
 
 interface UIActions {
-    increase: (by: number) => void;
-    randomIncrease: () => void;
+    setResults: (by: Result) => void;
+    getPeople: () => void;
 }
 
 const useUiStore = create<UIState>()(
     immer(devtools(
         (set) => ({
-            bears: 0,
+            resultData: {
+                count: 0,
+                results: [],
+            },
             loading: false,
         })
     ))
@@ -28,23 +31,46 @@ const sleep = (interval: number) => {
       return promise;
 } 
 
-const increase = (by: number) => useUiStore.setState((state) => ({ bears: state.bears + by }));
+const setResults = (by: Result) => useUiStore.setState((state) => ({ resultData: by }));
 const setIsLoading = (loading: boolean) => useUiStore.setState((state) => ({ loading: loading }));
 
-const randomIncrease = async () => {
+
+export interface Result {
+    count: number
+    results: People[]
+  }
+  
+  export interface People {
+    name: string
+    height: string
+    mass: string
+    hair_color: string
+    skin_color: string
+    eye_color: string
+    birth_year: string
+    gender: string
+    homeworld: string
+    films: string[]
+    species: string[]
+    vehicles: string[]
+    starships: string[]
+    created: string
+    edited: string
+    url: string
+  }
+
+const getPeople = async () => {
     setIsLoading(true);
     const url = new URL("http://localhost:3000/api")
     const response = await fetch(url);
-    const j = await response.json();
-    await sleep(3000)
+    const result:Result = await response.json();
+    setResults(result);
     setIsLoading(false);
-    console.log(j);
-    increase(j.randomNumber[0]);
 };
 
 export const ACTIONS: UIActions = {
-    increase,
-    randomIncrease,
+    setResults,
+    getPeople,
 };
 
 export default useUiStore;

@@ -34,6 +34,7 @@
     "@types/react-dom": "18.2.9",
     "@types/react-is": "18.2.2",
     "@types/styled-components": "5.1.26",
+    "@types/uuid": "^9.0.6",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",
     "babel-jest": "^29.4.1",
@@ -77,6 +78,7 @@
     "rxjs": "^7.8.0",
     "styled-components": "^6.1.0",
     "tslib": "^2.3.0",
+    "uuid": "^9.0.1",
     "zustand": "^4.4.4"
   }
 }

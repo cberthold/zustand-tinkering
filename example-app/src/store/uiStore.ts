@@ -2,15 +2,11 @@ import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { devtools } from 'zustand/middleware';
 
-interface UIState {
-    resultData: Result;
-    loading: boolean;
-}
+import { enableMapSet } from 'immer';
+import { UIState } from './types';
 
-interface UIActions {
-    setResults: (by: Result) => void;
-    getPeople: () => void;
-}
+enableMapSet();
+
 
 const useUiStore = create<UIState>()(
     immer(devtools(
@@ -19,7 +15,15 @@ const useUiStore = create<UIState>()(
                 count: 0,
                 results: [],
             },
+            filter: {
+                films: [],
+                filmNames: new Set(),
+            },
             loading: false,
+            filteredData: {
+                count: 0,
+                results: [],
+            }
         })
     ))
 )
@@ -31,46 +35,7 @@ const sleep = (interval: number) => {
       return promise;
 } 
 
-const setResults = (by: Result) => useUiStore.setState((state) => ({ resultData: by }));
-const setIsLoading = (loading: boolean) => useUiStore.setState((state) => ({ loading: loading }));
 
 
-export interface Result {
-    count: number
-    results: People[]
-  }
-  
-  export interface People {
-    name: string
-    height: string
-    mass: string
-    hair_color: string
-    skin_color: string
-    eye_color: string
-    birth_year: string
-    gender: string
-    homeworld: string
-    films: string[]
-    species: string[]
-    vehicles: string[]
-    starships: string[]
-    created: string
-    edited: string
-    url: string
-  }
-
-const getPeople = async () => {
-    setIsLoading(true);
-    const url = new URL("http://localhost:3000/api")
-    const response = await fetch(url);
-    const result:Result = await response.json();
-    setResults(result);
-    setIsLoading(false);
-};
-
-export const ACTIONS: UIActions = {
-    setResults,
-    getPeople,
-};
 
 export default useUiStore;
